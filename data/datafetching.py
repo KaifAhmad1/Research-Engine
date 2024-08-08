@@ -23,7 +23,7 @@ retries = Retry(total=5, backoff_factor=0.1, status_forcelist=[429, 500, 502, 50
 session.mount('https://', HTTPAdapter(max_retries=retries))
 session.mount('http://', HTTPAdapter(max_retries=retries))
 
-# Define Pydantic models for Structured output 
+# Define Pydantic models for Structured output
 class Website(BaseModel):
     url: HttpUrl
 
@@ -110,7 +110,7 @@ def fetch_cve_data() -> List[CVEData]:
 def exa_search(query: SearchTerm) -> List[ExaData]:
     try:
         exa_client = Exa(api_key=EXA_API_KEY)
-        results = exa_client.search(query.term)  
+        results = exa_client.search(query.term)
         return [ExaData(title=item['title'], url=item['url'], snippet=item['snippet']) for item in results.get('results', [])]
     except Exception as e:
         logger.error(f"Error fetching Exa.ai research: {str(e)}")
