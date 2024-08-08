@@ -108,7 +108,7 @@ def fetch_cve_data() -> List[CVEData]:
 def exa_search(query: SearchTerm) -> List[ExaData]:
     try:
         exa_client = Exa(api_key=EXA_API_KEY)
-        results = exa_client.search(query.term)  # Use the correct method
+        results = exa_client.search(query.term)  
         return [ExaData(title=item['title'], url=item['url'], snippet=item['snippet']) for item in results.get('results', [])]
     except Exception as e:
         logger.error(f"Error fetching Exa.ai research: {str(e)}")
