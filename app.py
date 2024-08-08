@@ -1,10 +1,9 @@
+# app.py
+
 import streamlit as st
-from model.agents import CyberCopilot
+from model.agents import process_query
 from data.datafetching import fetch_data
 from data.dataloading import load_data
-
-# Initialize the model (assuming you've already set up your CyberCopilot class)
-copilot = CyberCopilot()
 
 # Streamlit UI Configuration
 st.set_page_config(page_title="Cybersecurity Search Engine + AI Copilot", layout="wide")
@@ -29,17 +28,17 @@ if st.button("Search"):
         prompt = f"{user_query}" if not query_chunking else f"[CHUNKED] {user_query}"
         fetched_data = fetch_data(prompt)
         curated_results = load_data(fetched_data, show_sources=show_sources)
-        
+
         # Get and display response from the copilot
-        response = copilot.get_response(curated_results)
+        response = process_query(curated_results)
         st.subheader("Results")
         st.write(response)
-        
+
         # Show Data Sources if enabled
         if show_sources:
             st.write("Data Sources:")
             st.write(fetched_data.get('sources', "No sources available."))
-        
+
         # Show Summary if enabled
         if show_summary:
             summary = copilot.generate_summary(response)
