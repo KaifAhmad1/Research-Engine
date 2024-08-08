@@ -1,76 +1,43 @@
 ## Cybersecurity Search Engine and AI Copilot
 
-The **Cybersecurity Search Engine and AI Copilot** is an innovative AI-powered platform tailored for cybersecurity professionals. This tool is designed to streamline and enhance your cybersecurity workflows by combining a powerful search engine with intelligent, context-aware guidance. Whether you're conducting vulnerability assessments, responding to incidents, or managing threat intelligence, this copilot is here to assist, offering precise information and actionable insights when you need them most.
+An AI-powered platform designed to streamline cybersecurity workflows. This tool combines a powerful search engine with intelligent, context-aware guidance to assist in tasks like vulnerability assessments, incident response, and threat intelligence management.
 
-### Key Features
+### Features
 
-#### 1. **Intelligent Information Retrieval**
-   - **Comprehensive Search**: Access and analyze data from a vast array of cybersecurity sources, including threat intelligence feeds, security blogs, research papers, and more.
-   - **Dynamic Results**: Get tailored search results that align with your specific needs, whether you're hunting for threats or looking up best practices.
-
-#### 2. **Context-Aware Assistance**
-   - **Adaptive Guidance**: Receive expert advice and step-by-step instructions based on your task and expertise level. The copilot adjusts its responses to provide the most relevant and actionable information.
-   - **Task Optimization**: The copilot not only answers your queries but also helps you optimize your cybersecurity tasks by recommending the best tools and techniques for the job.
-
-#### 3. **Real-Time Threat Intelligence**
-   - **Live Threat Analysis**: Stay ahead of emerging threats with real-time assessments based on the latest intelligence. The copilot analyzes data from multiple sources to provide a comprehensive view of current threats.
-   - **Proactive Alerts**: Get early warnings about potential cyber threats, helping you mitigate risks before they escalate.
-
-#### 4. **Automated Reporting**
-   - **Comprehensive Reports**: Generate detailed reports based on your search results and analyses. These reports can be customized to meet specific requirements, making it easier to document findings and share insights with your team.
-   - **Compliance and Best Practices**: Ensure your actions align with industry standards and regulations, with guidance on compliance issues relevant to your sector.
-
-#### 5. **Code and Tool Integration**
-   - **Automated Code Generation**: The copilot can provide Python scripts and code snippets to automate routine cybersecurity tasks, saving you time and reducing the chance of errors.
-   - **Tool Recommendations**: Discover and learn how to use the best cybersecurity tools for your specific needs, with explanations on how to implement them effectively in your workflow.
-
-#### 6. **Ethical and Proactive Guidance**
-   - **Ethical Hacking Support**: The copilot adheres to ethical hacking principles, ensuring that all advice and assistance provided is within legal and ethical boundaries.
-   - **Proactive Advice**: Beyond simply answering questions, the copilot anticipates potential issues, offering proactive advice to help you stay ahead in your cybersecurity efforts.
+- **Information Retrieval**: Search and analyze data from a wide range of cybersecurity sources with results tailored to your needs.
+- **Context-Aware Assistance**: Get adaptive, expert guidance based on your tasks.
+- **Real-Time Threat Intelligence**: Stay updated with live threat analysis and proactive alerts.
+- **Automated Reporting**: Generate customizable reports aligned with industry standards.
+- **Code & Tool Integration**: Automate tasks with code snippets and discover the best tools for your workflow.
+- **Ethical Guidance**: Adhere to ethical hacking principles with proactive, responsible advice.
 
 ### Getting Started
 
-To start using the Cybersecurity Search Engine and AI Copilot:
-
-1. **Define Your Objective**: Whether you're looking to conduct a vulnerability assessment, respond to an incident, or research the latest threats, start by clearly defining your objective.
-2. **Engage the Copilot**: Input your query or task into the system. The copilot will provide a comprehensive response that includes search results, expert analysis, and actionable recommendations.
-3. **Follow the Guidance**: Utilize the copilot's step-by-step instructions, code snippets, and tool recommendations to efficiently complete your cybersecurity tasks.
-4. **Generate Reports**: Use the automated reporting feature to document your findings and share them with stakeholders.
+1. **Define Your Objective**: Set a clear goal (e.g., vulnerability assessment, incident response).
+2. **Input Query**: Engage the copilot for expert analysis and actionable recommendations.
+3. **Follow Guidance**: Use instructions, code snippets, and tool recommendations.
+4. **Generate Reports**: Document and share findings.
 
 ### Use Cases
 
-#### **Vulnerability Assessments**
-   - Get step-by-step guidance on conducting thorough vulnerability assessments, with recommendations on the best tools and techniques to use.
+- **Vulnerability Assessments**: Step-by-step guidance with tool recommendations.
+- **Incident Response**: Real-time assistance for managing incidents.
+- **Threat Intelligence**: Live updates and analysis of emerging threats.
+- **Compliance**: Simplify documentation and align with industry standards.
 
-#### **Incident Response**
-   - Receive real-time assistance in responding to cybersecurity incidents, including immediate action steps, containment strategies, and communication templates.
+### Project Structure
 
-#### **Threat Intelligence**
-   - Stay informed on emerging threats with live updates and analysis, helping you protect your organization from potential attacks.
-
-#### **Compliance and Reporting**
-   - Ensure your cybersecurity practices align with industry standards and regulations, with automated report generation to simplify compliance documentation.
-
-### Conclusion
-
-The **Cybersecurity Search Engine and AI Copilot** is more than just a tool—it's your partner in navigating the complex world of cybersecurity. With its powerful search capabilities, context-aware guidance, and proactive support, it empowers you to tackle even the most challenging cybersecurity tasks with confidence and precision.
-
-```
+```plaintext
 Research-Engine/
 ├── config/
-│ ├── apikeys.py     # Contains all API keys and configuration settings
-│
+│   ├── apikeys.py        # API keys and settings
 ├── data/
-│ ├── datafetching.py     # Contains data scraping, social media scraping and initializing external sources of knowledge engines like exa.ai, duckduckgo
-│ └── dataloading.py      # Contains logic to call these functions and get relevant data
-│
+│   ├── datafetching.py   # Data scraping and integration
+│   └── dataloading.py    # Data retrieval logic
 ├── model/
-│ ├── agents.py           # Contains all agent's logic and initialization
-│ ├── model.py            # Contains LLM, Embedding Model Initialization and Storing in Vector DB
-│ └── prompts.py          # Contains agent's responsibilities and prompts
-│
-├── app.py                # Contains Streamlit Scripts and basic interface
-│
+│   ├── agents.py         # Agent logic and setup
+│   ├── model.py          # Model initialization and vector storage
+│   └── prompts.py        # Agent prompts and tasks
+├── app.py                # Streamlit interface
 ├── README.md
-└── requirements.txt      # Contains Package and dependencies to run this application
-```
+└── requirements.txt      # Dependencies
