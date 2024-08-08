@@ -1,3 +1,5 @@
+# config/apikeys.py
+
 # Constants and API Keys
 APIFY_API_KEY = "apify_api_yUkcz99gMX1pwNckRi7EyXLwhVTd0j3m4Mtt"
 SERPER_API_KEY = "46f714dac81c419d269dbd2d41794e926bc3419b"
