@@ -1,1 +1,20 @@
+apify-client
+langchain
+langchain-community
+langchain-groq
+transformers
+duckduckgo-search
+firecrawl-py
+tavily-python
+sentence-transformers
+requests
+beautifulsoup4
+ratelimit
+pyLDAvis
+faiss-cpu
+crewai
+crewai_tools
+exa
+exa_py
+langchain-exa
 
