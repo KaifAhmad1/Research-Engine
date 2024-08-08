@@ -1,12 +1,12 @@
-# agents.py 
+# agents.py
 
 from langchain.tools import Tool
 from langchain.agents import Agent, Task, Crew
 from model.model import initialize_llm
 from model.prompts import (
-    SYSTEM_PROMPT, 
-    THREAT_INTELLIGENCE_ANALYZER_PROMPT, 
-    VULNERABILITY_ASSESSMENT_GUIDE_PROMPT, 
+    SYSTEM_PROMPT,
+    THREAT_INTELLIGENCE_ANALYZER_PROMPT,
+    VULNERABILITY_ASSESSMENT_GUIDE_PROMPT,
     INCIDENT_RESPONSE_COORDINATOR_PROMPT
 )
 
