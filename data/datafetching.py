@@ -21,7 +21,7 @@ retries = Retry(total=5, backoff_factor=0.1, status_forcelist=[429, 500, 502, 50
 session.mount('https://', HTTPAdapter(max_retries=retries))
 session.mount('http://', HTTPAdapter(max_retries=retries))
 
-# Define Pydantic models
+# Define Pydantic models for Structured output 
 class Website(BaseModel):
     url: HttpUrl
 
