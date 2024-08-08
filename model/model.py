@@ -1,3 +1,5 @@
+# model.py
+
 from langchain.embeddings import HuggingFaceBgeEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.docstore.document import Document
