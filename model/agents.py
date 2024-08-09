@@ -1,7 +1,7 @@
 # model/agents.py
 
 from langchain.tools import Tool
-from langchain.agents import Agent, Crew
+from crewai import Agent, Task, Crew
 from model.model import initialize_llm
 from model.prompts import (
     SYSTEM_PROMPT,
