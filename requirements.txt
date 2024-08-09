@@ -1,3 +1,4 @@
+crewai
 streamlit
 apify-client
 langchain
@@ -12,7 +13,6 @@ beautifulsoup4
 ratelimit
 pyLDAvis
 faiss-cpu
-crewai
 crewai_tools
 exa
 exa_py
