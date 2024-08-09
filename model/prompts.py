@@ -1,4 +1,4 @@
-# prompts.py
+# model/prompts.py
 
 SYSTEM_PROMPT = """
 ## Role: Cybersecurity Search Engine and AI Copilot
