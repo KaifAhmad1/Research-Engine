@@ -1,4 +1,4 @@
-# model.py
+# model/model.py
 
 from langchain.embeddings import HuggingFaceBgeEmbeddings
 from langchain.vectorstores import FAISS
