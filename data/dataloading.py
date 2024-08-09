@@ -1,4 +1,4 @@
-# dataloading.py
+# data/dataloading.py
 
 from datafetching import (
     Website, SearchTerm, InputData, OutputData,
@@ -108,25 +108,31 @@ search_terms = [
 ]
 
 # Main script
-print("Starting comprehensive cybersecurity data collection and analysis...")
+def load_data(show_sources=True):
+    print("Starting comprehensive cybersecurity data collection and analysis...")
 
-# Collect data
-print("\nCollecting data from multiple sources...")
-input_data = InputData(websites=websites, search_terms=search_terms)
-web_data = scrape_websites(input_data.websites)
-tweet_data = [tweet for term in input_data.search_terms for tweet in fetch_tweets(term, max_tweets=50)]
-cve_data = fetch_cve_data()
-exa_data = [result for term in input_data.search_terms for result in exa_search(term)]
-duckduckgo_data = [result for term in input_data.search_terms for result in duckduckgo_search(term)]
+    # Collect data
+    print("\nCollecting data from multiple sources...")
+    input_data = InputData(websites=websites, search_terms=search_terms)
+    web_data = scrape_websites(input_data.websites)
+    tweet_data = [tweet for term in input_data.search_terms for tweet in fetch_tweets(term, max_tweets=50)]
+    cve_data = fetch_cve_data()
+    exa_data = [result for term in input_data.search_terms for result in exa_search(term)]
+    duckduckgo_data = [result for term in input_data.search_terms for result in duckduckgo_search(term)]
 
-output_data = OutputData(
-    web_data=web_data,
-    tweet_data=tweet_data,
-    cve_data=cve_data,
-    exa_data=exa_data,
-    duckduckgo_data=duckduckgo_data,
-)
+    output_data = OutputData(
+        web_data=web_data,
+        tweet_data=tweet_data,
+        cve_data=cve_data,
+        exa_data=exa_data,
+        duckduckgo_data=duckduckgo_data,
+    )
 
-print(f"Collected {len(output_data.web_data) + len(output_data.tweet_data) + len(output_data.cve_data) + len(output_data.exa_data) + len(output_data.duckduckgo_data) } total data points")
+    print(f"Collected {len(output_data.web_data) + len(output_data.tweet_data) + len(output_data.cve_data) + len(output_data.exa_data) + len(output_data.duckduckgo_data) } total data points")
 
-print("\nComprehensive cybersecurity data collection and analysis complete.")
+    print("\nComprehensive cybersecurity data collection and analysis complete.")
+
+    if show_sources:
+        return output_data, {"sources": [website.url for website in websites]}
+    else:
+        return output_data, {}
