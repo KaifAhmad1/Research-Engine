@@ -23,7 +23,7 @@ Before you begin, ensure you have the following installed:
 1. **Clone the Repository:**
 
 ```bash
-git clone https://github.com/your-repo/Research-Engine.git
+git clone https://github.com/KaifAhmad1/Research-Engine.git
 cd Research-Engine
 ```
 
