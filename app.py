@@ -2,7 +2,6 @@
 
 import streamlit as st
 from model.agents import process_query
-from data.datafetching import fetch_data
 from data.dataloading import load_data
 
 # Streamlit UI Configuration
@@ -26,18 +25,17 @@ if st.button("Search"):
     if user_query:
         # Fetch and curate data
         prompt = f"{user_query}" if not query_chunking else f"[CHUNKED] {user_query}"
-        fetched_data = fetch_data(prompt)
-        curated_results = load_data(fetched_data, show_sources=show_sources)
+        fetched_data, sources = load_data(show_sources=show_sources)
 
         # Get and display response from the copilot
-        response = process_query(curated_results)
+        response = process_query(fetched_data)
         st.subheader("Results")
         st.write(response)
 
         # Show Data Sources if enabled
         if show_sources:
             st.write("Data Sources:")
-            st.write(fetched_data.get('sources', "No sources available."))
+            st.write(sources.get('sources', "No sources available."))
 
         # Show Summary if enabled
         if show_summary:
