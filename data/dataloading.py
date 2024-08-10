@@ -1,6 +1,6 @@
 # data/dataloading.py
 
-from datafetching import (
+from data.datafetching import (
     Website, SearchTerm, InputData, OutputData,
     scrape_websites, fetch_tweets, fetch_cve_data, exa_search, duckduckgo_search
 )
