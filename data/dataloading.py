@@ -1,7 +1,8 @@
 from data.datafetching import (
     Website, SearchTerm, InputData, OutputData,
-    scrape_websites, fetch_tweets, fetch_cve_data, exa_search, duckduckgo_search
+    collect_data
 )
+import asyncio
 
 # Expanded list of websites
 websites = [
@@ -112,22 +113,10 @@ def load_data(chunk_size=1000):
     # Collect data
     print("\nCollecting data from multiple sources...")
     input_data = InputData(websites=websites, search_terms=search_terms)
-    web_data = scrape_websites(input_data.websites)
-    tweet_data = [tweet for term in input_data.search_terms for tweet in fetch_tweets(term, max_tweets=50)]
-    cve_data = fetch_cve_data()
-    exa_data = [result for term in input_data.search_terms for result in exa_search(term)]
-    duckduckgo_data = [result for term in input_data.search_terms for result in duckduckgo_search(term)]
-
-    output_data = OutputData(
-        web_data=web_data,
-        tweet_data=tweet_data,
-        cve_data=cve_data,
-        exa_data=exa_data,
-        duckduckgo_data=duckduckgo_data,
-    )
+    output_data = asyncio.run(collect_data(input_data))
 
     # Combine all data into a single list
-    combined_data = web_data + tweet_data + cve_data + exa_data + duckduckgo_data
+    combined_data = output_data.web_data + output_data.tweet_data + output_data.cve_data + output_data.exa_data + output_data.duckduckgo_data
 
     print(f"Collected {len(combined_data)} total data points")
 
