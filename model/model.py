@@ -4,7 +4,7 @@ from langchain.embeddings import HuggingFaceBgeEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.llms import ChatGroq
+from langchain_groq import ChatGroq
 from config.apikeys import GROQ_API_KEY
 import logging
 
