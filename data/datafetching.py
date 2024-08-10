@@ -1,10 +1,9 @@
 # data/datafetching.py
 
 import logging
+import asyncio
+import aiohttp
 from typing import List, Dict, Any
-import requests
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
 from apify_client import ApifyClient
 from pydantic import BaseModel, Field, HttpUrl
 from langchain.tools import DuckDuckGoSearchRun
@@ -17,11 +16,6 @@ logger = logging.getLogger(__name__)
 
 # Initialize Apify client
 apify_client = ApifyClient(APIFY_API_KEY)
-# Configure requests session with retries and timeouts
-session = requests.Session()
-retries = Retry(total=5, backoff_factor=0.1, status_forcelist=[429, 500, 502, 503, 504])
-session.mount('https://', HTTPAdapter(max_retries=retries))
-session.mount('http://', HTTPAdapter(max_retries=retries))
 
 # Define Pydantic models for Structured output
 class Website(BaseModel):
@@ -68,19 +62,23 @@ class OutputData(BaseModel):
     exa_data: List[ExaData] = Field(default_factory=list)
     duckduckgo_data: List[DuckDuckGoResult] = Field(default_factory=list)
 
-# Data collection functions
-def scrape_websites(websites: List[Website]) -> List[dict]:
-    results = []
-    for website in websites:
-        try:
-            response = session.get(website.url, timeout=10)
+# Asynchronous data collection functions
+async def fetch_url(session, url):
+    try:
+        async with session.get(url, timeout=10) as response:
             response.raise_for_status()
-            results.append({"url": website.url, "content": response.text})
-        except Exception as e:
-            logger.error(f"Error scraping {website.url}: {str(e)}")
-    return results
+            return {"url": url, "content": await response.text()}
+    except Exception as e:
+        logger.error(f"Error scraping {url}: {str(e)}")
+        return None
 
-def fetch_tweets(query: SearchTerm, max_tweets: int = 100) -> List[Tweet]:
+async def scrape_websites(websites: List[Website]) -> List[dict]:
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_url(session, website.url) for website in websites]
+        results = await asyncio.gather(*tasks)
+        return [result for result in results if result is not None]
+
+async def fetch_tweets(query: SearchTerm, max_tweets: int = 100) -> List[Tweet]:
     try:
         run = apify_client.actor("apidojo/tweet-scraper").call(
             run_input={"searchTerms": [query.term], "maxTweets": max_tweets, "languageCode": "en"}
@@ -93,21 +91,22 @@ def fetch_tweets(query: SearchTerm, max_tweets: int = 100) -> List[Tweet]:
             logger.error(f"Error fetching tweets: {str(e)}")
         return []
 
-def fetch_cve_data() -> List[CVEData]:
+async def fetch_cve_data() -> List[CVEData]:
     retries = 3
     for attempt in range(retries):
         try:
-            response = session.get("https://cve.circl.lu/api/last", timeout=30)
-            response.raise_for_status()
-            return [CVEData(**item) for item in response.json()]
-        except requests.exceptions.Timeout:
+            async with aiohttp.ClientSession() as session:
+                async with session.get("https://cve.circl.lu/api/last", timeout=30) as response:
+                    response.raise_for_status()
+                    return [CVEData(**item) for item in await response.json()]
+        except aiohttp.ClientTimeout:
             logger.warning(f"Timeout error. Retrying ({attempt + 1}/{retries})...")
         except Exception as e:
             logger.error(f"Error fetching CVE data: {str(e)}")
             break
     return []
 
-def exa_search(query: SearchTerm) -> List[ExaData]:
+async def exa_search(query: SearchTerm) -> List[ExaData]:
     try:
         exa_client = Exa(api_key=EXA_API_KEY)
         results = exa_client.search(query.term)
@@ -116,7 +115,7 @@ def exa_search(query: SearchTerm) -> List[ExaData]:
         logger.error(f"Error fetching Exa.ai research: {str(e)}")
         return []
 
-def duckduckgo_search(query: SearchTerm) -> List[DuckDuckGoResult]:
+async def duckduckgo_search(query: SearchTerm) -> List[DuckDuckGoResult]:
     try:
         tool = DuckDuckGoSearchRun()
         results = tool.run(query.term)
@@ -127,3 +126,25 @@ def duckduckgo_search(query: SearchTerm) -> List[DuckDuckGoResult]:
         else:
             logger.error(f"Error fetching DuckDuckGo search results: {str(e)}")
         return []
+
+# Main data collection function
+async def collect_data(input_data: InputData) -> OutputData:
+    web_data, tweet_data, cve_data, exa_data, duckduckgo_data = await asyncio.gather(
+        scrape_websites(input_data.websites),
+        *[fetch_tweets(term, max_tweets=50) for term in input_data.search_terms],
+        fetch_cve_data(),
+        *[exa_search(term) for term in input_data.search_terms],
+        *[duckduckgo_search(term) for term in input_data.search_terms]
+    )
+
+    tweet_data = [item for sublist in tweet_data for item in sublist]
+    exa_data = [item for sublist in exa_data for item in sublist]
+    duckduckgo_data = [item for sublist in duckduckgo_data for item in sublist]
+
+    return OutputData(
+        web_data=web_data,
+        tweet_data=tweet_data,
+        cve_data=cve_data,
+        exa_data=exa_data,
+        duckduckgo_data=duckduckgo_data,
+    )
