@@ -1,5 +1,3 @@
-# data/dataloading.py
-
 from data.datafetching import (
     Website, SearchTerm, InputData, OutputData,
     scrape_websites, fetch_tweets, fetch_cve_data, exa_search, duckduckgo_search
@@ -108,7 +106,7 @@ search_terms = [
 ]
 
 # Main script
-def load_data(show_sources=True):
+def load_data(chunk_size=1000):
     print("Starting comprehensive cybersecurity data collection and analysis...")
 
     # Collect data
@@ -128,11 +126,14 @@ def load_data(show_sources=True):
         duckduckgo_data=duckduckgo_data,
     )
 
-    print(f"Collected {len(output_data.web_data) + len(output_data.tweet_data) + len(output_data.cve_data) + len(output_data.exa_data) + len(output_data.duckduckgo_data) } total data points")
+    # Combine all data into a single list
+    combined_data = web_data + tweet_data + cve_data + exa_data + duckduckgo_data
+
+    print(f"Collected {len(combined_data)} total data points")
 
     print("\nComprehensive cybersecurity data collection and analysis complete.")
 
-    if show_sources:
-        return output_data, {"sources": [website.url for website in websites]}
-    else:
-        return output_data, {}
+    # Chunk the data
+    data_chunks = [combined_data[i:i + chunk_size] for i in range(0, len(combined_data), chunk_size)]
+
+    return data_chunks
