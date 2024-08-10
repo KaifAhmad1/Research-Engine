@@ -14,5 +14,4 @@ beautifulsoup4
 ratelimit
 pyLDAvis
 faiss-cpu
-exa
 exa_py
