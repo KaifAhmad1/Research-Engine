@@ -8,7 +8,6 @@ st.set_page_config(page_title="Cybersecurity Search Engine + AI Copilot", layout
 # Sidebar for Configuration
 st.sidebar.title("🔧 Settings")
 query_chunking = st.sidebar.checkbox("Enable Query Chunking", value=True)
-show_sources = st.sidebar.checkbox("Show Data Sources", value=True)
 show_summary = st.sidebar.checkbox("Generate Summary", value=True)
 
 # Main UI
@@ -27,19 +26,16 @@ if st.button("Search"):
             prompt = f"{user_query}" if not query_chunking else f"[CHUNKED] {user_query}"
 
             st.write("Stage: Fetching and Loading Data")
-            fetched_data, sources = load_data(show_sources=show_sources)
+            fetched_data_chunks = load_data(chunk_size=1000)  # Adjust chunk_size as needed
 
             st.write("Stage: Processing Query")
-            response = process_query(fetched_data)
+            response = ""
+            for chunk in fetched_data_chunks:
+                response += process_query(chunk)
 
         # Display results
         st.subheader("Results")
         st.write(response)
-
-        # Show Data Sources if enabled
-        if show_sources:
-            st.write("Data Sources:")
-            st.write(sources.get('sources', "No sources available."))
 
         # Show Summary if enabled
         if show_summary:
