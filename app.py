@@ -1,5 +1,3 @@
-# app.py
-
 import streamlit as st
 from model.agents import process_query
 from data.dataloading import load_data
@@ -23,12 +21,18 @@ user_query = st.text_area("Enter your query", placeholder="e.g., Recent ransomwa
 # Search and Display Results
 if st.button("Search"):
     if user_query:
-        # Fetch and curate data
-        prompt = f"{user_query}" if not query_chunking else f"[CHUNKED] {user_query}"
-        fetched_data, sources = load_data(show_sources=show_sources)
+        # Show spinner and stage feedback
+        with st.spinner("Processing query..."):
+            st.write("Stage: Preparing Query")
+            prompt = f"{user_query}" if not query_chunking else f"[CHUNKED] {user_query}"
 
-        # Get and display response from the copilot
-        response = process_query(fetched_data)
+            st.write("Stage: Fetching and Loading Data")
+            fetched_data, sources = load_data(show_sources=show_sources)
+
+            st.write("Stage: Processing Query")
+            response = process_query(fetched_data)
+
+        # Display results
         st.subheader("Results")
         st.write(response)
 
@@ -39,7 +43,9 @@ if st.button("Search"):
 
         # Show Summary if enabled
         if show_summary:
-            summary = copilot.generate_summary(response)
+            st.write("Stage: Generating Summary")
+            with st.spinner("Generating summary..."):
+                summary = copilot.generate_summary(response)
             st.subheader("Summary")
             st.write(summary)
     else:
