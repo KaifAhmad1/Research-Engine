@@ -1,9 +1,11 @@
-crewai
+crewai 
+crewai-tools
 streamlit
 apify-client
-langchain
-langchain-community
-langchain-groq
+langchain 
+langchain-community 
+langchain-groq 
+langchain-exa
 transformers
 duckduckgo-search
 firecrawl-py
@@ -13,8 +15,5 @@ beautifulsoup4
 ratelimit
 pyLDAvis
 faiss-cpu
-crewai_tools
 exa
 exa_py
-langchain-exa
-
