@@ -8,7 +8,6 @@ langchain-groq
 langchain-exa
 transformers
 duckduckgo-search
-firecrawl-py
 sentence-transformers
 requests
 beautifulsoup4
