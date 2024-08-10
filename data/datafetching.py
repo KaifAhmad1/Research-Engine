@@ -148,3 +148,4 @@ async def collect_data(input_data: InputData) -> OutputData:
         exa_data=exa_data,
         duckduckgo_data=duckduckgo_data,
     )
+
